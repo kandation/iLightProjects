@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1498108297 source:c:\users\kanda\desktop\ggt\main.cpp
+	<iostream>
+	<stdio.h>
+	<string.h>
+	"Display.h"
+
+1498042707 source:c:\users\kanda\desktop\ggt\src\display.cpp
+	"Display.h"
+
+1498042707 c:\users\kanda\desktop\ggt\include\display.h
+

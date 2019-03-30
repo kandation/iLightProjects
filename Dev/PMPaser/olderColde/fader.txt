@@ -1,0 +1,96 @@
+void menu_01_showFader() {
+  RGB rgb = RGB(0, 0, 0);
+  int hslcolor[16];
+  double fadeprogress[16];
+  int fadedirection[16];
+
+  for (int i = 0; i < 16; i++) {
+    fadedirection[i] = 1;
+    fadeprogress[i] = random(1, 49);
+    hslcolor[i] = random(0, 360);
+  }
+
+  int yyy = 0;
+  // while(yyy<8){
+
+  //--- Sound Statistic Begin
+  int analog_read_once = 0;
+
+  int sound_clap_threshole_high = 580;
+
+
+  //--- Sound Statistic End
+
+
+
+  /*for(int i=50;i>=0;i--){
+    for(int k=0;k<16;k++){
+    rgb = rgb.hsl2rgb(hslcolor[k],100,(i+fadeprogress[i])%50);
+    //rgb = rgb.hsl2rgb(hslcolor[k],100,fadeprogress[i]--);
+    //  fadeprogress[i] = (fadeprogress[i]--) % 50;
+    openSingle(k,rgb.toInt32());
+    }
+    delay(33);
+    pixels.show();
+    }*/
+  /* FadingLED(0,360,720);
+    FadingLED(360,0,720);*/
+  // yyy++;
+  //}
+  for (int i = 0; i <= 100000; i++) {
+    //ArduinoOTA.handle();
+    analog_read_once = analogRead (sensorPin);
+    if (1) {
+      sensorValue =  analog_read_once;
+
+      if (sensorValue > 520) {
+        sensorValue = 520;
+      }
+    }
+    if (sensorValue > sound_clap_threshole_high) {
+
+      digitalWrite(D7, HIGH);
+    } else {
+      digitalWrite(D7, LOW);
+    }
+
+
+    for (int k = 0; k < 16; k++) {
+      fade_divider_value = (40.00 - sensorValue * 39 / 520);
+
+      fadeprogress[k] +=  fadedirection[k] * exp((fadeprogress[k] / fade_divider_value));
+      if (fade_divider_value <= 15) {
+        for (int j = 0; j < 16; j++) {
+          hslcolor[j] = random(0, 360);
+        }
+      }
+
+      if (fadeprogress[k] >= 47 || fadeprogress[k] <= 5) {
+        fadeprogress[k] = (fadeprogress[k] >= 47) ? 47 : 5;
+        fadedirection[k] *= -1;
+
+      }
+      rgb = rgb.hsl2rgb(hslcolor[k], 100, fadeprogress[k]);
+
+
+      //   Serial.print(fadeprogress[0]);
+      //   Serial.println();
+      //  rgb = rgb.hsl2rgb(hslcolor[k],100,fadeprogress[i]);
+      // fadeprogress[i] = (fadeprogress[i]++) % 50;
+      openSingle(k, rgb.toInt32());
+    }
+
+    delay(33);
+    //Serial.print(fade_divider_value);
+    Serial.print("\t");
+    Serial.print(sensorValue);
+    Serial.print("\t");
+    Serial.print(analogRead (sensorPin));
+    Serial.print("\t");
+    Serial.print(sound_sampling_mean);
+    Serial.print("\t");
+    Serial.print(sound_max_peek);
+    Serial.println();
+    pixels.show();
+  }
+}
