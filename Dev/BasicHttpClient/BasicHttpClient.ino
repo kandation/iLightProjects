@@ -32,7 +32,7 @@ void setup() {
   }
 
   WiFi.mode(WIFI_STA);
-  WiFiMulti.addAP("Catalight", "0000000000");
+  WiFiMulti.addAP("Catalight", "####");
 
 }
 
