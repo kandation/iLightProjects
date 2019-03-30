@@ -45,7 +45,7 @@ int * pm25_color_rgb;
 /* ----------------- PM25 WIFI -------------------*/
 // Fill ssid and password with your network credentials
 const char* ssid = "@JumboPlusIoT";
-const char* password = "ilovecmu";
+const char* password = "####";
 
 const char* host = "script.google.com";
 // Replace with your own script id to make server side changes
