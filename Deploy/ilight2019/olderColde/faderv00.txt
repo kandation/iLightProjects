@@ -1,0 +1,17 @@
+void FadingLED(int s, int f, int d)
+{
+  RGB rgb = RGB(0, 0, 0);
+  int x1 = (s <= f) ? s : f;
+  int x2 = (s <= f) ? f : s;
+  int x3 = (s <= f) ? d / (f - s) : d / (s - f);
+  for (int i = x1; i <= x2; i++)
+  {
+    rgb = rgb.hsl2rgb(i, 100, 50);
+    for (int k = 0; k < 16; k++)
+    {
+      openSingle(k, rgb.toInt32());
+    }
+    delay(x3);
+    pixels.show();
+  }
+}
