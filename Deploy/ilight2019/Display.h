@@ -17,6 +17,8 @@ public:
   RingColor ring[CONFIG_MAP_SIZE];
 
   Display();
+  void add_dot(byte, uint32_t);
+  void add_dot(byte position, byte rgb_color[]);
   void add_pixel(byte[], int);
   void add_pixel(byte[], byte[], int);
   void add_pixel(byte value[], uint32_t rgb_hex, int arrSize);
@@ -26,6 +28,7 @@ public:
   void rotate_left();
   void rotate_right();
   uint32_t rgb2hex(byte, byte, byte);
+  void set_fade_from_pos(byte pos, uint8_t _value, uint8_t _start, uint8_t _end);
   uint32_t *get_color()
   {
     return color;

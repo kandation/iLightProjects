@@ -117,25 +117,25 @@ void RGB::rgb2hsl_convert()
   _stu = (uint8_t)(s * 100.0);
   _lua = (uint8_t)(l * 100.0);
 
-  Serial.print(r);
-  Serial.print(" ");
-  Serial.print(g);
-  Serial.print(" ");
-  Serial.print(b);
-  Serial.print("/");
-  Serial.print(_r);
-  Serial.print(" ");
-  Serial.print(_g);
-  Serial.print(" ");
-  Serial.print(_b);
-  Serial.print("/");
-  Serial.print(h);
-  Serial.print(" ");
-  Serial.print(_hue);
-  Serial.print(" ");
-  Serial.print(_stu);
-  Serial.print(" ");
-  Serial.println(_lua);
+  // Serial.print(r);
+  // Serial.print(" ");
+  // Serial.print(g);
+  // Serial.print(" ");
+  // Serial.print(b);
+  // Serial.print("/");
+  // Serial.print(_r);
+  // Serial.print(" ");
+  // Serial.print(_g);
+  // Serial.print(" ");
+  // Serial.print(_b);
+  // Serial.print("/");
+  // Serial.print(h);
+  // Serial.print(" ");
+  // Serial.print(_hue);
+  // Serial.print(" ");
+  // Serial.print(_stu);
+  // Serial.print(" ");
+  // Serial.println(_lua);
 }
 
 /**

@@ -9,6 +9,7 @@
 // # Internet Function
 #include "HTTPSRedirect.h"
 #include "DebugMacros.h"
+#include "MYHSL.h"
 
 // # InClass LIBRARY
 #include <string.h> //Memcpy
@@ -44,6 +45,8 @@ static int pm25_network_error_count = 0;
 byte pm25_global_r = 0;
 byte pm25_global_g = 0;
 byte pm25_global_b = 0;
+
+byte menu_number = 0;
 
 byte *pm25_color_rgb;
 static byte pm25_color_rgbColor[] = {0, 0, 0};
@@ -241,8 +244,9 @@ byte pm25_logo_rgb_5[] = {255, 0, 255};
 byte pm25_logo_rgb_6[] = {255, 0, 255};
 byte pm25_logo_rgb_error[] = {10, 0, 130};
 
-byte network_logo_block[12] = {0, 1, 2, 3, 4, 7, 8, 11, 12, 13, 14, 15};
-byte network_logo_random[] = {255, 150, 0};
+// byte network_logo_block[12] = {0, 1, 2, 3, 4, 7, 8, 11, 12, 13, 14, 15};
+byte network_logo_block[12] = {0};
+byte network_logo_random[] = {255, 255, 255};
 
 DisplayRender render = DisplayRender(display);
 
@@ -258,14 +262,14 @@ void clear_zero_map()
 {
   display.clear_pixel();
   render.setDisplay(display);
-  render.updateMap();
+  render.updateMap4x4();
 }
 
 void network_show_load_logo()
 {
   display.add_pixel(network_logo_block, network_logo_random, 12);
   render.setDisplay(display);
-  render.updateMap();
+  render.updateMap4x4();
 }
 
 void FadingLEDAllFromCouter(uint8_t _value, uint8_t _start, uint8_t _end, byte *__color)
@@ -330,37 +334,37 @@ void test_01_testColor()
   display.clear_pixel();
   display.add_pixel(pm25_logo_full, pm25_logo_rgb_1, 16);
   render.setDisplay(display);
-  render.updateMap();
+  render.updateMap4x4();
   delay(temp_delay);
 
   display.clear_pixel();
   display.add_pixel(pm25_logo_full, pm25_logo_rgb_2, 16);
   render.setDisplay(display);
-  render.updateMap();
+  render.updateMap4x4();
   delay(temp_delay);
 
   display.clear_pixel();
   display.add_pixel(pm25_logo_full, pm25_logo_rgb_3, 16);
   render.setDisplay(display);
-  render.updateMap();
+  render.updateMap4x4();
   delay(temp_delay);
 
   display.clear_pixel();
   display.add_pixel(pm25_logo_full, pm25_logo_rgb_4, 16);
   render.setDisplay(display);
-  render.updateMap();
+  render.updateMap4x4();
   delay(temp_delay);
 
   display.clear_pixel();
   display.add_pixel(pm25_logo_full, pm25_logo_rgb_5, 16);
   render.setDisplay(display);
-  render.updateMap();
+  render.updateMap4x4();
   delay(temp_delay);
 
   display.clear_pixel();
   display.add_pixel(pm25_logo_full, pm25_logo_rgb_6, 16);
   render.setDisplay(display);
-  render.updateMap();
+  render.updateMap4x4();
   delay(temp_delay);
 }
 
@@ -372,7 +376,7 @@ void menu_00_showCPELogo()
   display.add_pixel(cpe_logo_blue, cpe_logo_blue_rgb, 5);
   display.add_pixel(cpe_logo_white, cpe_logo_white_rgb, 1);
   render.setDisplay(display);
-  render.updateMap();
+  render.updateMap4x4();
   delay(2000);
 }
 
@@ -423,8 +427,8 @@ void menu_03_pm25_setColorSelect(int level)
   case 3:
     pm25_blink_time = 50;
     pm25_global_r = 255;
-    pm25_global_g = 150;
-    pm25_global_b = 50;
+    pm25_global_g = 140;
+    pm25_global_b = 0;
     break;
   case 4:
     pm25_blink_time = 50;
@@ -514,7 +518,7 @@ void menu_03_pm25()
     }
 
     render.setDisplay(display);
-    render.updateMap();
+    render.updateMap4x4();
     pm25_counter += 1;
   }
   else
@@ -524,7 +528,7 @@ void menu_03_pm25()
     display.add_pixel(pm25_logo_full, icon_color_yellow, 16);
     display.add_pixel(icon_x, icon_color_red, 4);
     render.setDisplay(display);
-    render.updateMap();
+    render.updateMap4x4();
     pm25_blink_time = 200;
   }
 }
@@ -534,38 +538,38 @@ void menu_02_boxRotate()
   display.clear_pixel();
   display.add_pixel(box, 4);
   render.setDisplay(display);
-  render.updateMap();
+  render.updateMap4x4();
   delay(2000);
 
   display.clear_pixel();
   display.add_pixel(box2, 4);
   render.setDisplay(display);
-  render.updateMap();
+  render.updateMap4x4();
   delay(2000);
 
   display.clear_pixel();
   display.add_pixel(cpe2, 8);
   render.setDisplay(display);
-  render.updateMap();
+  render.updateMap4x4();
   delay(2000);
 
   display.clear_pixel();
   display.add_pixel(cpe, 8);
   render.setDisplay(display);
-  render.updateMap();
+  render.updateMap4x4();
   delay(1000);
 
   display.clear_pixel();
   display.add_pixel(line, 4);
   render.setDisplay(display);
-  render.updateMap();
+  render.updateMap4x4();
   delay(2000);
   _DPRINTLN("Wait");
 }
 
 void menu_02_boxRotate_Rotate()
 {
-  render.updateMap();
+  render.updateMap4x4();
   //pixels.show();
 
   if (count > 10)
@@ -584,40 +588,257 @@ void menu_02_boxRotate_Rotate()
   delay(500);
 }
 
+byte menu_04_dot_run_number = 0;
+void menu_04_dot_run()
+{
+
+  for (byte i = 0; i < 16; i++)
+  {
+    display.add_dot(i, pm25_logo_rgb_3);
+    render.setDisplay(display);
+    render.updateMap4x4();
+    delay(100);
+  }
+
+  for (byte i = 0; i < 16; i++)
+  {
+    display.add_dot(i, (uint32_t)0);
+    render.setDisplay(display);
+    render.updateMap4x4();
+    delay(100);
+  }
+}
+
+void menu_05_randomsurface()
+{
+  uint16_t hua_color[16];
+  uint8_t stu_color = 100;
+  uint8_t lua_color[16];
+  MYHSL temp_hsl;
+
+  bool direction[16];
+
+  for (byte i = 0; i < 16; i++)
+  {
+    hua_color[i] = (uint16_t)random(0, 360);
+    lua_color[i] = (uint8_t)random(1, 50);
+
+    temp_hsl = MYHSL(hua_color[i], 54, lua_color[i]);
+    display.add_dot(i, temp_hsl.toInt32());
+    render.setDisplay(display);
+    direction[i] = (bool)random(0, 1);
+  }
+  render.updateMap4x4();
+
+  // Loop Fading
+  while (true)
+  {
+    for (byte i = 0; i < 16; i++)
+    {
+      temp_hsl = MYHSL(hua_color[i], 54, lua_color[i]);
+      display.add_dot(i, temp_hsl.toInt32());
+      render.setDisplay(display);
+      lua_color[i] += 1 * (direction[i]) ? 1 : -2;
+      lua_color[i] = (lua_color[i] <= 0) ? 0 : lua_color[i];
+      lua_color[i] = (lua_color[i] >= 50) ? 50 : lua_color[i];
+      if (lua_color[i] <= 0 || lua_color[i] >= 50)
+      {
+        direction[i] = !direction[i];
+      }
+    }
+    if (random(4977) == 31)
+    {
+      break;
+    }
+    render.updateMap4x4();
+    delay(10);
+  }
+}
+
+void menu_switching(byte num_menu)
+{
+  byte can_play_led[] = {0, 1, 2, 3, 7, 11, 15, 14, 13, 12, 8, 4};
+  num_menu = (num_menu <= 12) ? num_menu : 12;
+
+  for (byte i = 0; i < num_menu; i++)
+  {
+    display.add_dot(can_play_led[i], (uint32_t)0xffffff);
+    render.setDisplay(display);
+    render.updateMap4x4();
+    delay(100);
+  }
+  for (byte i = num_menu; i < 12; i++)
+  {
+    display.add_dot(can_play_led[i], (uint32_t)0x1e00ff);
+    render.setDisplay(display);
+    render.updateMap4x4();
+    delay(30);
+  }
+  delay(1000);
+
+  for (int t = 0; t < 3; t++)
+  {
+    // Close LED
+    delay(150);
+    for (byte i = 0; i < 12; i++)
+    {
+      display.add_dot(can_play_led[i], (uint32_t)0x0);
+    }
+    render.setDisplay(display);
+    render.updateMap4x4();
+    // Open Agine
+    delay(150);
+    for (byte i = 0; i < num_menu; i++)
+    {
+      display.add_dot(can_play_led[i], (uint32_t)0xffffff);
+    }
+    for (byte i = num_menu; i < 12; i++)
+    {
+      display.add_dot(can_play_led[i], (uint32_t)0x1e00ff);
+    }
+    render.setDisplay(display);
+    render.updateMap4x4();
+  }
+  delay(1500);
+  display.clear_pixel();
+  render.setDisplay(display);
+  render.updateMap4x4();
+}
+
+void menu_06_bar()
+{
+  byte random_bar_history[4] = {0, 0, 0, 0};
+  byte index_height[4][4] = {{12, 4, 8, 0}, {13, 9, 5, 1}, {14, 10, 6, 2}, {15, 11, 7, 3}};
+  byte bar_random_now = (byte)random(0, 4);
+  MYHSL color_hsl_p[4];
+  for (int i = 0; i < 4; i++)
+  {
+    random_bar_history[i] = (byte)random(0, 4);
+    color_hsl_p[i] = MYHSL((uint16_t)random(0, 360), 100, 50);
+  }
+  while (true)
+  {
+    // BarHistory
+    for (byte aa = 0; aa < 3; aa++)
+    {
+      random_bar_history[aa] = random_bar_history[aa + 1];
+      color_hsl_p[aa] = color_hsl_p[aa + 1];
+    }
+    random_bar_history[4] = (byte)random(0, 4);
+    color_hsl_p[4] = MYHSL((uint16_t)random(0, 360), 100, 50);
+    display.clear_pixel();
+    for (byte i = 0; i < 16; i++)
+    {
+      display.add_dot(i, (uint32_t)0xffffff);
+    }
+    render.setDisplay(display);
+    if (random(63333) == 0)
+    {
+      break;
+    }
+    //render.updateMap4x4();
+
+    // Generate Bar
+    for (byte histo = 0; histo < 4; histo++)
+    {
+      for (byte i = 0; i < random_bar_history[histo]; i++)
+      {
+        display.add_dot(index_height[histo][i], color_hsl_p[histo].toInt32());
+        //render.setDisplay(display);
+      }
+    }
+    render.setDisplay(display);
+    render.updateMap4x4();
+    delay(1000);
+  }
+}
+
 void setup()
 {
 
   // End of trinket special code
 
   Serial.begin(115200);
-  render.displayBegin();
+  render.displayBegin4x4();
 
   _DPRINTLN("Start MCU");
 
   pinMode(D7, OUTPUT);
   delay(100);
-  test_01_testColor();
-  menu_00_showCPELogo();
-  delay(100);
+  //test_01_testColor();
+  // menu_switching(1);
+  //menu_00_showCPELogo();
+  //delay(3000);
+  //menu_switching(2);
+  // delay(2000);
+  //menu_04_dot_run();
+  // menu_switching(3);
+  //menu_05_randomsurface();
+  //menu_switching(6);
+  menu_06_bar();
+  // menu_switching(12);
 
   /* ---- Wifi -----*/
   _DPRINTLN("Start Wifi");
 
-  accessWifi();
-  networkStep_01hostConnection();
-  networkStep_02CheckHost();
+  //accessWifi();
+  //networkStep_01hostConnection();
+  ////networkStep_02CheckHost();
 
   //delete HTTPSRedirect object;
-  delete client;
-  client = nullptr;
+  //delete client;
+  //client = nullptr;
 
   /* ----- Wifi ------*/
   _DPRINTLN("Start Loop");
+  // menu_04_dot_run();
   //delay(2000);
 }
+byte menu_index = 0;
 
 void loop()
 {
-  menu_03_pm25();
-  delay(pm25_blink_time);
+  menu_index = (byte)random(0, 4);
+  if (menu_index == 0)
+  {
+
+    menu_switching(1);
+    menu_00_showCPELogo();
+    delay(6000);
+    menu_04_dot_run();
+  }
+  else if (menu_index == 2)
+  {
+    menu_switching(3);
+    menu_05_randomsurface();
+    menu_04_dot_run();
+  }
+  else if (menu_index == 2)
+  {
+    int temp_delay = 500;
+    display.clear_pixel();
+    display.add_pixel(pm25_logo_full, pm25_logo_rgb_1, 16);
+    render.setDisplay(display);
+    render.updateMap4x4();
+    delay(3000);
+    while (true)
+    {
+      FadingLEDAllFromCouterValue(abs(pm25_counter), 0, 50, 255, 206, 8);
+      pm25_counter += 1;
+      if (pm25_counter == 50)
+      {
+        pm25_counter = -50;
+      }
+      if (random(2000) == 32)
+      {
+        break;
+      }
+    }
+  }
+  else
+  {
+    menu_04_dot_run();
+  }
+  //menu_03_pm25();
+  //delay(pm25_blink_time);
 }

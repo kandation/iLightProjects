@@ -1,4 +1,12 @@
 {
     "C_Cpp.errorSquiggles": "Enabled",
-    "C_Cpp.intelliSenseEngineFallback": "Enabled"
+    "C_Cpp.intelliSenseEngineFallback": "Enabled",
+    "files.associations": {
+        "functional": "cpp",
+        "array": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "utility": "cpp",
+        "initializer_list": "cpp"
+    }
 }

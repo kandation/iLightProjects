@@ -15,6 +15,25 @@ uint32_t Display::rgb2hex(byte R, byte G, byte B)
   return (R << 16) | (G << 8) | B;
 }
 
+void Display::add_dot(byte position, uint32_t rgb_hex)
+{
+  /*
+ * add pixel one in postion x
+ */
+  pos[position] = position;
+  color[position] = rgb_hex;
+}
+
+void Display::add_dot(byte position, byte rgb_color[])
+{
+  /*
+ * add pixel one in postion x
+ */
+  pos[position] = position;
+  color[position] = rgb2hex(rgb_color[0], rgb_color[1], rgb_color[2]);
+  ;
+}
+
 void Display::add_pixel(byte value[], int arrSize)
 {
   /*
@@ -125,4 +144,18 @@ void Display::clear_pixel()
     color[i] = 0;
     type[i] = 0;
   }
+}
+
+void Display::set_fade_from_pos(byte pos, uint8_t _value, uint8_t _start, uint8_t _end)
+{
+  // stupid function because you can use hsl color system to fade L
+  // first uint32 to RGB
+  RGB __rgb = RGB(0, 0, 0);
+  __rgb = __rgb.hex2rgb(color[pos]);
+  // Secound RGB to hsl and set light with light_value
+
+  uint8_t _val = constrain(_value, _start, _end);
+  __rgb.rgb2hsl_convert();
+  __rgb = __rgb.hsl2rgb(__rgb.get_h(), __rgb.get_s(), _val);
+  set_color_n(pos, __rgb.toInt32());
 }
