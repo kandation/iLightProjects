@@ -8,4 +8,4 @@
 - Microphone Module
 
 # Preview
-![Docs/IMG_25610124_170457.jpg](img)
+![Docs/IMG_25610124_170457.jpg](Docs/IMG_25610124_170457.jpg)
